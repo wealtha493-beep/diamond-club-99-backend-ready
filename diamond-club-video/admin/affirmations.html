@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Affirmation — Admin Panel — Diamond Club 99 of Ekiti</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/members.css">
+<link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+
+<script src="../assets/js/admin-auth.js"></script>
+<script>DCAdminAuth.requireAdminAuth();</script>
+
+<div class="members-shell admin-shell">
+
+  <header class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <a href="dashboard.html" class="topbar-brand">
+      <img src="../assets/images/logo.png" alt="Diamond Club logo">
+      <span><span class="t-name">DIAMOND CLUB 99</span><span class="t-tag">ADMIN PANEL<span class="admin-badge">ADMIN</span></span></span>
+    </a>
+    <span class="topbar-title">Daily Affirmation</span>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-actions">
+      <div class="dropdown">
+        <button class="profile-trigger" data-dropdown-trigger="profilePanel">
+          <span class="avatar">A</span>
+          <span class="p-name" data-admin-name>Administrator</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="dropdown-panel profile-panel" id="profilePanel">
+          <a class="dropdown-item" href="settings.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+            Settings
+          </a>
+          <a class="dropdown-item" href="../members/dashboard.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z"/></svg>
+            View Members Area
+          </a>
+          <hr>
+          <a class="dropdown-item logout" href="#" data-logout>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+            Logout
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <nav class="side-nav">
+      <a href="dashboard.html" data-page="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="11" width="8" height="10" rx="1.5"/><rect x="3" y="14" width="8" height="7" rx="1.5"/></svg>Dashboard</a>
+      <a href="members.html" data-page="members.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-5.5 6.5-5.5S15.5 16.5 15.5 20"/><circle cx="18" cy="8" r="2.7"/><path d="M17 14.5c2.7.4 4.5 2.2 4.5 5.5"/></svg>Members</a>
+      <a href="announcements.html" data-page="announcements.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11v2a2 2 0 0 0 2 2h1l3 5V4L6 9H5a2 2 0 0 0-2 2Z"/><path d="M15 8a4 4 0 0 1 0 8M19 5a9 9 0 0 1 0 14"/></svg>Announcements</a>
+      <a href="news.html" data-page="news.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h13a2 2 0 0 1 2 2v13a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V4Z"/><path d="M8 8h7M8 12h7M8 16h4M18 8v10a2 2 0 0 0 2 2"/></svg>Club News</a>
+      <a href="affirmations.html" data-page="affirmations.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12l3 6-9 12L3 9Z"/></svg>Daily Affirmation</a>
+      <a href="projects.html" data-page="projects.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Projects</a>
+      <a href="gallery.html" data-page="gallery.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>Gallery</a>
+      <a href="leadership.html" data-page="leadership.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6Z"/></svg>Leadership</a>
+      <a href="meetings.html" data-page="meetings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Meetings</a>
+      <div class="side-divider"></div>
+      <a href="settings.html" data-page="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>Settings</a>
+      <a href="#" class="side-logout" data-logout><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>Logout</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="main-inner">
+
+      <div class="page-head">
+        <div><h1>Daily Affirmation</h1><p>The affirmation marked Active is what appears on the Members Dashboard. Schedule others ahead of time.</p></div>
+        <button class="btn btn-gold btn-sm" id="addBtn" type="button">+ New Affirmation</button>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>Affirmation</th><th>Date</th><th>Status</th><th></th></tr></thead>
+            <tbody id="itemRows"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="empty-state" id="emptyState" style="display:none;"><p>No affirmations yet.</p></div>
+    
+<div class="modal-scrim" id="itemModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="itemModalTitle">New Affirmation</h3><button class="modal-close" data-modal-close="itemModal">&times;</button></div>
+    <div class="modal-body">
+      <form id="itemForm">
+        <input type="hidden" id="fId">
+        <div class="field"><label>Affirmation text</label><textarea id="fText" rows="3" placeholder="United we stand: today I..." required></textarea></div>
+        <div class="field"><label>Date (when this becomes relevant / was written)</label><input type="date" id="fDate" required></div>
+        <div class="field" style="display:flex; align-items:center; gap:10px;">
+          <label class="toggle"><input type="checkbox" id="fActive"><span class="track"></span></label>
+          <label for="fActive" style="margin:0;">Set as the active affirmation shown on the dashboard now</label>
+        </div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline-dark btn-sm" data-modal-close="itemModal" type="button">Cancel</button>
+      <button class="btn btn-gold btn-sm" id="itemSaveBtn" type="button">Save</button>
+    </div>
+  </div>
+</div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Shared confirm dialog -->
+<div class="modal-scrim" id="confirmModal">
+  <div class="modal-box modal-sm confirm-modal">
+    <div class="modal-body">
+      <div class="confirm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg></div>
+      <h3 id="confirmModalTitle" style="margin-bottom:8px;">Are you sure?</h3>
+      <p id="confirmModalText">This action cannot be undone.</p>
+    </div>
+    <div class="modal-foot" style="justify-content:center;">
+      <button class="btn btn-outline-dark btn-sm" data-modal-close="confirmModal" type="button">Cancel</button>
+      <button class="btn btn-gold btn-sm" id="confirmModalAction" type="button">Yes, continue</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+<script src="../assets/data/member-session.js"></script>
+<script src="../assets/data/affirmations.js"></script>
+<script src="../assets/data/announcements.js"></script>
+<script src="../assets/data/news.js"></script>
+<script src="../assets/data/projects.js"></script>
+<script src="../assets/data/gallery.js"></script>
+<script src="../assets/data/leadership.js"></script>
+<script src="../assets/data/meetings.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/admin.js"></script>
+<script>
+  DCAdminUI.initShell(DCAdminAuth.currentSession().email);
+  DCAdminUI.initModalDismiss();
+  DCAdminUI.initConfirmModal();
+  let items = [];
+
+  function row(it) {
+    return `<tr>
+      <td style="max-width:420px;">${it.text}</td>
+      <td>${DCAdminUI.formatDate(it.date)}</td>
+      <td>${it.active ? '<span class="st st-published">Active</span>' : '<span class="st st-draft">Scheduled</span>'}</td>
+      <td><div class="row-actions">
+        ${!it.active ? `<button class="icon-action" data-activate="${it.id}" title="Set active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6 9 17l-5-5"/></svg></button>` : ''}
+        <button class="icon-action" data-edit="${it.id}" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+        <button class="icon-action danger" data-delete="${it.id}" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg></button>
+      </div></td>
+    </tr>`;
+  }
+
+  function render() {
+    document.getElementById("itemRows").innerHTML = items.map(row).join("");
+    document.getElementById("emptyState").style.display = items.length === 0 ? "block" : "none";
+    document.querySelectorAll("[data-edit]").forEach(b => b.addEventListener("click", () => openEdit(b.dataset.edit)));
+    document.querySelectorAll("[data-activate]").forEach(b => b.addEventListener("click", () => setActive(b.dataset.activate)));
+    document.querySelectorAll("[data-delete]").forEach(b => b.addEventListener("click", () => {
+      const it = items.find(x => x.id === b.dataset.delete);
+      DCAdminUI.confirmAction("Delete this affirmation? This cannot be undone.", () => {
+        DCStore.affirmations.remove(it.id).then(() => {
+          DCStore.activity.log("deleted affirmation", it.text.slice(0,40)+"…", DCAdminAuth.currentSession().email);
+          DCAdminUI.toast("Deleted."); load();
+        });
+      }, "Delete affirmation?");
+    }));
+  }
+
+  function setActive(id) {
+    Promise.all(items.map(it => DCStore.affirmations.update(it.id, { active: it.id === id }))).then(() => {
+      DCStore.activity.log("set active affirmation", "", DCAdminAuth.currentSession().email);
+      DCAdminUI.toast("Active affirmation updated — members will see it on next visit.");
+      load();
+    });
+  }
+
+  function openAdd() {
+    document.getElementById("itemModalTitle").textContent = "New Affirmation";
+    document.getElementById("itemForm").reset();
+    document.getElementById("fId").value = "";
+    DCAdminUI.openModal("itemModal");
+  }
+  function openEdit(id) {
+    const it = items.find(x => x.id === id);
+    document.getElementById("itemModalTitle").textContent = "Edit Affirmation";
+    document.getElementById("fId").value = it.id;
+    document.getElementById("fText").value = it.text;
+    document.getElementById("fDate").value = it.date;
+    document.getElementById("fActive").checked = it.active;
+    DCAdminUI.openModal("itemModal");
+  }
+  document.getElementById("addBtn").addEventListener("click", openAdd);
+
+  document.getElementById("itemSaveBtn").addEventListener("click", () => {
+    const existingId = document.getElementById("fId").value;
+    const text = document.getElementById("fText").value.trim();
+    const date = document.getElementById("fDate").value;
+    if (!text || !date) { DCAdminUI.toast("Text and date are required."); return; }
+    const makeActive = document.getElementById("fActive").checked;
+    const admin = DCAdminAuth.currentSession().email;
+
+    function afterSave(saved) {
+      if (makeActive) {
+        Promise.all(items.filter(it => it.id !== saved.id).map(it => DCStore.affirmations.update(it.id, { active: false })))
+          .then(() => DCStore.affirmations.update(saved.id, { active: true }))
+          .then(() => finish());
+      } else finish();
+    }
+    function finish() {
+      DCStore.activity.log(existingId ? "updated affirmation" : "created affirmation", text.slice(0,40)+"…", admin);
+      DCAdminUI.toast("Saved.");
+      DCAdminUI.closeModal("itemModal");
+      load();
+    }
+
+    if (existingId) {
+      DCStore.affirmations.update(existingId, { text, date }).then(afterSave);
+    } else {
+      DCStore.affirmations.create({ text, date, active: false, isPlaceholder: true }).then(afterSave);
+    }
+  });
+
+  function load() { DCStore.affirmations.list().then(list => { items = list.sort((a,b)=> new Date(b.date)-new Date(a.date)); render(); }); }
+  load();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="g11" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1d1f28"/>
+      <stop offset="100%" stop-color="#131419"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#g11)"/>
+  <g opacity="0.16" transform="translate(400.0,250.0)">
+    <path d="M0 -70 L60 -20 L36 70 L-36 70 L-60 -20 Z" fill="none" stroke="#DEC08A" stroke-width="3"/>
+  </g>
+  <text x="400.0" y="472" text-anchor="middle" font-family="Manrope, sans-serif" font-size="15" letter-spacing="1" fill="#B9924F" opacity="0.85">AWARDS NIGHT</text>
+</svg>

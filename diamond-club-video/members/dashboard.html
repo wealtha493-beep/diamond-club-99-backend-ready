@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Members Area — Diamond Club 99 of Ekiti</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/members.css">
+</head>
+<body>
+
+<!--
+  ============================================================
+  MEMBERS DASHBOARD — PROTECTED ROUTE
+  A visitor without a valid session is redirected to login.html
+  before this page's content is ever shown (see DCAuth.requireAuth
+  below). This is a client-side convenience guard only; a real
+  deployment must also enforce this server-side.
+  ============================================================
+-->
+<script src="../assets/js/auth.js"></script>
+<script>DCAuth.requireAuth();</script>
+
+<div class="members-shell">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <a href="dashboard.html" class="topbar-brand">
+      <img src="../assets/images/logo.png" alt="Diamond Club logo">
+      <span><span class="t-name">DIAMOND CLUB 99</span><span class="t-tag">MEMBERS AREA</span></span>
+    </a>
+    <span class="topbar-title">Dashboard</span>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-actions">
+      <div class="dropdown">
+        <button class="icon-btn" data-dropdown-trigger="notifPanel" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+          <span class="dot"></span>
+        </button>
+        <div class="dropdown-panel" id="notifPanel">
+          <div class="dropdown-head">Notifications</div>
+          <a class="dropdown-item" href="announcements.html">
+            <div class="di-title">Annual subscription due for the new Club year</div>
+            <div class="di-meta">Finance · 8 Jan 2026</div>
+          </a>
+          <a class="dropdown-item" href="meetings.html">
+            <div class="di-title">Venue confirmed for this month's General Meeting</div>
+            <div class="di-meta">Meetings · 4 Jan 2026</div>
+          </a>
+          <a class="dropdown-item" href="announcements.html">
+            <div class="di-title">Welcome to the new Members Area</div>
+            <div class="di-meta">General · 20 Dec 2025</div>
+          </a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="profile-trigger" data-dropdown-trigger="profilePanel">
+          <span class="avatar" data-member-initials>DM</span>
+          <span class="p-name" data-member-name>Demo Member</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="dropdown-panel profile-panel" id="profilePanel">
+          <a class="dropdown-item" href="profile.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+            My Profile
+          </a>
+          <a class="dropdown-item" href="contact.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            Contact / Support
+          </a>
+          <hr>
+          <a class="dropdown-item logout" href="#" data-logout>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+            Logout
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <nav class="side-nav">
+      <a href="dashboard.html" data-page="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="11" width="8" height="10" rx="1.5"/><rect x="3" y="14" width="8" height="7" rx="1.5"/></svg>Dashboard</a>
+      <a href="profile.html" data-page="profile.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>My Profile</a>
+      <a href="announcements.html" data-page="announcements.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11v2a2 2 0 0 0 2 2h1l3 5V4L6 9H5a2 2 0 0 0-2 2Z"/><path d="M15 8a4 4 0 0 1 0 8M19 5a9 9 0 0 1 0 14"/></svg>Announcements</a>
+      <a href="news.html" data-page="news.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h13a2 2 0 0 1 2 2v13a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V4Z"/><path d="M8 8h7M8 12h7M8 16h4M18 8v10a2 2 0 0 0 2 2"/></svg>Club News</a>
+      <a href="projects.html" data-page="projects.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Projects</a>
+      <a href="gallery.html" data-page="gallery.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>Club Gallery</a>
+      <a href="leadership.html" data-page="leadership.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-5.5 6.5-5.5S15.5 16.5 15.5 20"/><circle cx="18" cy="8" r="2.7"/><path d="M17 14.5c2.7.4 4.5 2.2 4.5 5.5"/></svg>Club Leadership</a>
+      <a href="meetings.html" data-page="meetings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Meetings</a>
+      <a href="constitution.html" data-page="constitution.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>Constitution</a>
+      <div class="side-divider"></div>
+      <a href="contact.html" data-page="contact.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Contact / Support</a>
+      <a href="#" class="side-logout" data-logout><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>Logout</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="main-inner">
+
+      <div class="page-head">
+        <div>
+          <h1>Welcome, <span data-member-name>Demo Member</span></h1>
+          <p>Here's what's happening at Diamond Club 99 of Ekiti.</p>
+        </div>
+      </div>
+
+      <!-- Daily Affirmation -->
+      <div class="section-block">
+        <div class="affirmation-card reveal">
+          <div class="eyebrow on-dark"><svg class="gem-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12l3 6-9 12L3 9Z"/></svg>DAILY AFFIRMATION</div>
+          <blockquote id="affirmationText">Loading…</blockquote>
+          <div class="aff-date" id="affirmationMeta"></div>
+        </div>
+      </div>
+
+      <!-- Announcements -->
+      <div class="section-block">
+        <div class="section-block-head">
+          <h2>Latest Announcements</h2>
+          <a href="announcements.html" class="see-all">View all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="grid-3" id="announcementsGrid"></div>
+      </div>
+
+      <!-- Club News -->
+      <div class="section-block">
+        <div class="section-block-head">
+          <h2>Club News</h2>
+          <a href="news.html" class="see-all">View all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="grid-3" id="newsGrid"></div>
+      </div>
+
+      <!-- Current President -->
+      <div class="section-block">
+        <div class="section-block-head">
+          <h2>Club President</h2>
+          <a href="leadership.html" class="see-all">Full leadership <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="president-card reveal" id="presidentCard"></div>
+      </div>
+
+      <div class="grid-2" style="align-items:start;">
+        <!-- Upcoming Meetings -->
+        <div class="section-block">
+          <div class="section-block-head">
+            <h2>Upcoming Meetings</h2>
+            <a href="meetings.html" class="see-all">View all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+          <div class="panel" id="meetingsList"></div>
+        </div>
+
+        <!-- Projects -->
+        <div class="section-block">
+          <div class="section-block-head">
+            <h2>Club Projects</h2>
+            <a href="projects.html" class="see-all">View all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+          <div class="grid-2" id="projectsGridSmall"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="../assets/data/member-session.js"></script>
+<script src="../assets/data/affirmations.js"></script>
+<script src="../assets/data/announcements.js"></script>
+<script src="../assets/data/news.js"></script>
+<script src="../assets/data/projects.js"></script>
+<script src="../assets/data/gallery.js"></script>
+<script src="../assets/data/leadership.js"></script>
+<script src="../assets/data/meetings.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+  DCStore.ready.then(() => {
+  const member = window.DC_DATA.currentMember;
+  DCUI.initShell(member.fullName);
+  document.querySelector("[data-member-initials]").textContent = member.initials;
+
+  // Affirmation
+  const aff = window.DC_DATA.dailyAffirmation;
+  document.getElementById("affirmationText").textContent = "\u201C" + aff.text + "\u201D";
+  document.getElementById("affirmationMeta").textContent = aff.date + (aff.isPlaceholder ? " · Sample data — controlled by admin" : "");
+
+  // Announcements (latest 3)
+  const annGrid = document.getElementById("announcementsGrid");
+  window.DC_DATA.announcements
+    .slice().sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0,3)
+    .forEach(item => annGrid.insertAdjacentHTML("beforeend", DCUI.renderAnnouncementCard(item)));
+
+  // News (latest 3)
+  const newsGrid = document.getElementById("newsGrid");
+  window.DC_DATA.news
+    .slice().sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0,3)
+    .forEach(item => newsGrid.insertAdjacentHTML("beforeend", DCUI.renderNewsCard(item)));
+
+  // President
+  const president = window.DC_DATA.president;
+  document.getElementById("presidentCard").innerHTML = `
+    <div class="president-photo"><img src="${president.photo}" alt="${president.name}"></div>
+    <div>
+      <h3>${president.name}</h3>
+      <div class="position">${president.position}</div>
+      <p>${president.description}</p>
+      <p style="margin-top:8px; opacity:.7; font-size:0.82rem;">${president.tenure}</p>
+      ${president.isPlaceholder ? `<div style="margin-top:12px;">${DCUI.sampleBadge()}</div>` : ""}
+    </div>`;
+
+  // Meetings (upcoming, next 2)
+  const meetingsList = document.getElementById("meetingsList");
+  window.DC_DATA.meetings.filter(m => m.status === "upcoming").slice(0,2)
+    .forEach(item => meetingsList.insertAdjacentHTML("beforeend", DCUI.renderMeetingItem(item)));
+
+  // Projects (first 2)
+  const projGrid = document.getElementById("projectsGridSmall");
+  window.DC_DATA.projects.slice(0,2)
+    .forEach(item => projGrid.insertAdjacentHTML("beforeend", DCUI.renderProjectCard(item)));
+
+  DCUI.initReadMore();
+</script>
+</body>
+</html>

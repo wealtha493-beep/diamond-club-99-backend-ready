@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diamond Club — Brotherhood. Leadership. Service.</title>
+<meta name="description" content="Diamond Club is a private fellowship of men committed to brotherhood, leadership, and community service.">
+
+<!--
+  ============================================================
+  DIAMOND CLUB — PUBLIC HOMEPAGE (STATIC BUILD)
+  ------------------------------------------------------------
+  This file contains ONLY the public marketing homepage.
+  No authentication, member data, or admin tooling lives here.
+
+  Places intentionally left as integration points for later work:
+    - #members-login-link   -> wire to real auth / member portal
+    - #view-full-gallery    -> wire to a full gallery page/route
+    - .gallery-item[data-*] -> swap placeholder images for an
+                                admin-managed gallery feed
+    - .stat[data-count]     -> can be swapped for live figures
+                                pulled from a future backend
+  ============================================================
+-->
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --charcoal: #121318;
+    --charcoal-soft: #1B1D24;
+    --charcoal-line: rgba(255,255,255,0.09);
+    --cream: #EDE6D8;
+    --cream-soft: #F6F2E9;
+    --ink: #1C1A16;
+    --ink-soft: #56503F;
+    --gold: #B9924F;
+    --gold-light: #DEC08A;
+    --gold-dark: #8C6C33;
+    --gold-line: rgba(185,146,79,0.35);
+    --white: #FBFAF6;
+    --radius-sm: 4px;
+    --radius-md: 10px;
+    --shadow-deep: 0 30px 60px -20px rgba(0,0,0,0.55);
+    --ease: cubic-bezier(.16,.84,.44,1);
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    font-family:'Manrope', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; margin:0; padding:0; }
+  button{ font-family:inherit; cursor:pointer; }
+  .brand img {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  @media (max-width: 768px) {
+    .brand img {
+      width: 45px;
+      height: 45px;
+    }
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    line-height:1.12;
+    margin:0;
+    letter-spacing: -0.01em;
+  }
+
+  .container{
+    width:100%;
+    max-width: 1180px;
+    margin:0 auto;
+    padding: 0 28px;
+  }
+
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--gold-dark);
+    font-weight:700;
+    margin-bottom: 18px;
+  }
+  .eyebrow .gem{ width:14px; height:14px; color:var(--gold); }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding: 15px 32px;
+    border-radius: var(--radius-sm);
+    font-weight:700;
+    font-size: 0.92rem;
+    border: 1.5px solid transparent;
+    transition: transform .45s var(--ease), background-color .3s ease, color .3s ease, border-color .3s ease;
+    white-space: nowrap;
+  }
+  .btn-gold{
+    background: linear-gradient(180deg, var(--gold-light), var(--gold));
+    color: #1B1408;
+  }
+  .btn-gold:hover{ transform: translateY(-2px); }
+  .btn-outline{
+    border-color: rgba(255,255,255,0.4);
+    color: var(--white);
+    background: transparent;
+  }
+  .btn-outline:hover{
+    border-color: var(--gold-light);
+    color: var(--gold-light);
+    transform: translateY(-2px);
+  }
+  .btn-outline-dark{
+    border-color: rgba(28,26,22,0.35);
+    color: var(--ink);
+    background:transparent;
+  }
+  .btn-outline-dark:hover{
+    border-color: var(--gold-dark);
+    color: var(--gold-dark);
+    transform: translateY(-2px);
+  }
+
+  .gem-icon{ display:block; }
+
+  /* -------------------- reveal-on-scroll -------------------- */
+  .reveal{
+    opacity:0;
+    transform: translateY(22px);
+    transition: opacity .8s var(--ease), transform .8s var(--ease);
+  }
+  .reveal.in-view{ opacity:1; transform:none; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+    .reveal{ opacity:1; transform:none; }
+  }
+
+  /* ============================================================
+     HEADER
+     ============================================================ */
+  header{
+    position: fixed;
+    top:0; left:0; right:0;
+    z-index: 500;
+    padding: 22px 0;
+    transition: background-color .4s ease, padding .4s ease, box-shadow .4s ease;
+  }
+  header.scrolled{
+    background: rgba(18,19,24,0.92);
+    backdrop-filter: blur(10px);
+    padding: 14px 0;
+    box-shadow: 0 10px 30px -14px rgba(0,0,0,0.5);
+  }
+  header .container{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color: var(--white);
+  }
+  .brand .gem-icon{ width:30px; height:30px; color: var(--gold-light); }
+  .brand-name{
+    font-family:'Fraunces', serif;
+    font-size: 1.28rem;
+    letter-spacing: 0.03em;
+    font-weight: 600;
+  }
+
+  nav.primary-nav{ display:flex; align-items:center; gap: 40px; }
+  .nav-links{ display:flex; gap: 34px; }
+  .nav-links a{
+    color: rgba(251,250,246,0.82);
+    font-size: 0.93rem;
+    font-weight: 600;
+    position: relative;
+    padding: 4px 0;
+    transition: color .3s ease;
+  }
+  .nav-links a::after{
+    content:'';
+    position:absolute;
+    left:0; bottom:-2px;
+    width:0; height:1px;
+    background: var(--gold-light);
+    transition: width .35s var(--ease);
+  }
+  .nav-links a:hover{ color: var(--white); }
+  .nav-links a:hover::after{ width:100%; }
+
+  .login-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    padding: 11px 22px;
+    border: 1.5px solid var(--gold-line);
+    border-radius: var(--radius-sm);
+    color: var(--gold-light);
+    font-weight:700;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    transition: background-color .35s ease, color .35s ease, border-color .35s ease;
+  }
+  .login-btn:hover{
+    background: var(--gold-light);
+    color: #1B1408;
+    border-color: var(--gold-light);
+  }
+  .login-btn svg{ width:14px; height:14px; }
+
+  .hamburger{
+    display:none;
+    width:40px; height:40px;
+    border:none;
+    background:transparent;
+    color: var(--white);
+    position: relative;
+    z-index: 620;
+  }
+  .hamburger span{
+    display:block;
+    position:absolute;
+    left: 8px; right:8px;
+    height:1.5px;
+    background: currentColor;
+    transition: transform .35s var(--ease), opacity .25s ease, top .35s var(--ease);
+  }
+  .hamburger span:nth-child(1){ top:14px; }
+  .hamburger span:nth-child(2){ top:20px; }
+  .hamburger span:nth-child(3){ top:26px; }
+  .hamburger.open span:nth-child(1){ top:20px; transform: rotate(45deg); }
+  .hamburger.open span:nth-child(2){ opacity:0; }
+  .hamburger.open span:nth-child(3){ top:20px; transform: rotate(-45deg); }
+
+  .mobile-menu{
+    position: fixed;
+    inset:0;
+    z-index: 610;
+    background: rgba(15,16,20,0.97);
+    backdrop-filter: blur(14px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap: 34px;
+    opacity:0;
+    visibility:hidden;
+    transform: translateY(-10px);
+    transition: opacity .4s var(--ease), transform .4s var(--ease), visibility .4s;
+  }
+  .mobile-menu.open{ opacity:1; visibility:visible; transform:none; }
+  .mobile-menu a{
+    color: var(--cream);
+    font-family:'Fraunces', serif;
+    font-size: 1.7rem;
+    font-weight:500;
+  }
+  .mobile-menu .login-btn{ margin-top: 10px; }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero{
+    position:relative;
+    min-height: 100svh;
+    display:flex;
+    align-items:flex-end;
+    color: var(--white);
+    overflow:hidden;
+    padding-bottom: 100px;
+  }
+  .hero-media{
+    position:absolute; inset:0;
+    background:#0a0b0e;
+    overflow:hidden;
+  }
+  .hero-media video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .hero-media::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(10,11,14,0.55) 0%, rgba(10,11,14,0.72) 55%, rgba(10,11,14,0.95) 100%);
+    pointer-events:none;
+  }
+  .hero-gem{
+    position:absolute;
+    top:-8%; right:-6%;
+    width: min(60vw, 620px);
+    height: auto;
+    color: rgba(185,146,79,0.14);
+    pointer-events:none;
+  }
+  .hero-inner{
+    position:relative;
+    z-index:2;
+    max-width: 680px;
+  }
+  .hero-side-art{
+    position:absolute;
+    z-index:2;
+    right: clamp(24px, 5vw, 72px);
+    top: 50%;
+    transform: translateY(-46%);
+    width: clamp(190px, 24vw, 340px);
+    max-height: 78vh;
+    object-fit: contain;
+    filter: drop-shadow(0 24px 35px rgba(0,0,0,.45));
+    opacity:.94;
+    pointer-events:none;
+  }
+  .constitution-grid{
+    display:grid;
+    grid-template-columns: .9fr 1.1fr;
+    gap:72px;
+    align-items:center;
+  }
+  .constitution-cover{
+    position:relative;
+    max-width:420px;
+    margin:auto;
+    padding:26px;
+    background:rgba(255,255,255,.055);
+    border:1px solid rgba(191,151,78,.28);
+    box-shadow:var(--shadow-deep);
+  }
+  .constitution-cover img{
+    width:100%;
+    max-height:520px;
+    object-fit:contain;
+  }
+  .constitution-content h2{ margin-bottom:20px; }
+  .constitution-intro{ color:rgba(237,230,216,.72); max-width:680px; margin-bottom:28px; }
+  .constitution-points{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin:28px 0 32px;
+  }
+  .constitution-point{
+    padding:18px;
+    border:1px solid rgba(191,151,78,.2);
+    background:rgba(255,255,255,.035);
+    border-radius:var(--radius-sm);
+  }
+  .constitution-point strong{ display:block; color:var(--gold-light); margin-bottom:5px; }
+  .constitution-point span{ color:rgba(237,230,216,.72); font-size:.9rem; }
+  .constitution-note{ font-size:.82rem; color:rgba(237,230,216,.5); margin-top:14px; }
+  .hero-inner .eyebrow{ color: var(--gold-light); }
+  .hero h1{
+    font-size: clamp(2.7rem, 7vw, 5.2rem);
+    color: var(--white);
+  }
+  .hero-tagline{
+    font-family:'Fraunces', serif;
+    font-style: italic;
+    font-weight:500;
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
+    color: var(--gold-light);
+    margin: 22px 0 20px;
+    max-width: 520px;
+  }
+  .hero-copy{
+    color: rgba(251,250,246,0.82);
+    font-size: 1.02rem;
+    max-width: 520px;
+    margin-bottom: 38px;
+  }
+  .hero-actions{ display:flex; flex-wrap:wrap; gap:16px; }
+
+  .scroll-cue{
+    position:absolute;
+    right: 28px;
+    bottom: 36px;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color: rgba(251,250,246,0.55);
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+  }
+  .scroll-cue .line{
+    width:1px; height: 46px;
+    background: rgba(251,250,246,0.35);
+    position:relative;
+    overflow:hidden;
+  }
+  .scroll-cue .line::after{
+    content:'';
+    position:absolute;
+    top:-100%; left:0; right:0; height:100%;
+    background: var(--gold-light);
+    animation: cue-drip 2.4s ease-in-out infinite;
+  }
+  @keyframes cue-drip{
+    0%{ top:-100%; }
+    60%{ top:100%; }
+    100%{ top:100%; }
+  }
+
+  /* ============================================================
+     SECTION SHELLS
+     ============================================================ */
+  section{ padding: 118px 0; position:relative; }
+  .section-dark{ background: var(--charcoal); color: var(--cream-soft); }
+  .section-dark h2{ color: var(--white); }
+
+  .section-head{ max-width: 620px; margin-bottom: 56px; }
+  .section-head h2{ font-size: clamp(1.9rem, 3.6vw, 2.7rem); }
+  .section-head p{ margin-top:16px; font-size: 1.02rem; color: var(--ink-soft); }
+  .section-dark .section-head p{ color: rgba(237,230,216,0.68); }
+
+  /* ============================================================
+     ABOUT
+     ============================================================ */
+  .about-grid{
+    display:grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 72px;
+    align-items:center;
+  }
+  .about-text h2{ font-size: clamp(1.9rem, 3.6vw, 2.6rem); margin-bottom: 22px; }
+  .about-text p{ color: var(--ink-soft); margin: 0 0 16px; }
+  .pillars{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 30px;
+    margin: 30px 0 34px;
+  }
+  .pillar{ display:flex; gap:12px; }
+  .pillar .gem-icon{ width:20px; height:20px; color: var(--gold); flex-shrink:0; margin-top:3px; }
+  .pillar h4{ font-size: 1rem; margin-bottom:4px; }
+  .pillar p{ font-size: 0.9rem; color: var(--ink-soft); margin:0; }
+  .more-copy{
+    max-height:0;
+    overflow:hidden;
+    transition: max-height .6s var(--ease);
+  }
+  .more-copy.open{ max-height: 400px; }
+  .more-copy p{ padding-top: 4px; }
+
+  .about-media{ position:relative; }
+  .about-media .frame{
+    position:relative;
+    border: 1.5px solid var(--gold-line);
+    padding: 16px;
+    border-radius: var(--radius-md);
+  }
+  .about-media img{
+    border-radius: 2px;
+    clip-path: polygon(0 0, 100% 0, 100% 92%, 92% 100%, 0 100%);
+  }
+  .about-media .gem-badge{
+    position:absolute;
+    bottom:-26px; left:-26px;
+    width:76px; height:76px;
+    background: var(--charcoal);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: var(--shadow-deep);
+  }
+  .about-media .gem-badge .gem-icon{ width:30px; height:30px; color:var(--gold-light); }
+
+  /* ============================================================
+     ACHIEVEMENTS
+     ============================================================ */
+  .stats-row{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--charcoal-line);
+    border: 1px solid var(--charcoal-line);
+    border-radius: var(--radius-md);
+    overflow:hidden;
+    margin-bottom: 76px;
+  }
+  .stat{
+    background: var(--charcoal-soft);
+    padding: 40px 24px;
+    text-align:center;
+  }
+  .stat .num{
+    font-family:'Fraunces', serif;
+    font-size: clamp(2.1rem, 4vw, 3rem);
+    color: var(--gold-light);
+    font-weight:600;
+  }
+  .stat .label{
+    margin-top:10px;
+    font-size: 0.86rem;
+    color: rgba(237,230,216,0.65);
+    font-weight:600;
+  }
+
+  .cards-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+  .achieve-card{
+    background: var(--charcoal-soft);
+    border: 1px solid var(--charcoal-line);
+    border-radius: var(--radius-md);
+    overflow:hidden;
+    transition: transform .5s var(--ease), border-color .4s ease;
+  }
+  .achieve-card:hover{ transform: translateY(-6px); border-color: var(--gold-line); }
+  .achieve-card .thumb{ height: 190px; overflow:hidden; }
+  .achieve-card .thumb img{ width:100%; height:100%; object-fit:cover; transition: transform .8s var(--ease); }
+  .achieve-card:hover .thumb img{ transform: scale(1.06); }
+  .achieve-card .body{ padding: 24px 26px 28px; }
+  .achieve-card .year{
+    font-size: 0.78rem;
+    color: var(--gold-light);
+    font-weight:700;
+    letter-spacing: 0.04em;
+  }
+  .achieve-card h3{ font-size: 1.15rem; margin: 8px 0 10px; color: var(--white); }
+  .achieve-card p{ font-size: 0.92rem; color: rgba(237,230,216,0.68); margin:0; }
+
+  /* ============================================================
+     GALLERY
+     ============================================================ */
+  .gallery-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 180px;
+    gap: 14px;
+  }
+  .gallery-item{
+    position:relative;
+    overflow:hidden;
+    border-radius: var(--radius-sm);
+    cursor:pointer;
+  }
+  .gallery-item:nth-child(1){ grid-column: span 2; grid-row: span 2; }
+  .gallery-item:nth-child(4){ grid-column: span 2; }
+  .gallery-item:nth-child(7){ grid-row: span 2; }
+  .gallery-item img{
+    width:100%; height:100%; object-fit:cover;
+    transition: transform .8s var(--ease);
+  }
+  .gallery-item:hover img{ transform: scale(1.08); }
+  .gallery-item::after{
+    content: attr(data-caption);
+    position:absolute; left:0; right:0; bottom:0;
+    padding: 14px 16px;
+    font-size: 0.85rem;
+    font-weight:600;
+    color: var(--white);
+    background: linear-gradient(0deg, rgba(0,0,0,0.72), transparent);
+    opacity:0;
+    transform: translateY(8px);
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .gallery-item:hover::after{ opacity:1; transform:none; }
+
+  .gallery-footer{ margin-top: 46px; text-align:center; }
+
+  .lightbox{
+    position:fixed; inset:0; z-index:900;
+    background: rgba(10,10,12,0.94);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; visibility:hidden;
+    transition: opacity .35s ease, visibility .35s;
+    padding: 40px;
+  }
+  .lightbox.open{ opacity:1; visibility:visible; }
+  .lightbox img{
+    max-width: min(900px, 100%);
+    max-height: 80vh;
+    border-radius: 4px;
+    box-shadow: var(--shadow-deep);
+  }
+  .lightbox .caption{
+    position:absolute;
+    bottom: 44px; left:0; right:0;
+    text-align:center;
+    color: var(--cream);
+    font-size:0.95rem;
+    letter-spacing:0.02em;
+  }
+  .lightbox-close{
+    position:absolute; top: 28px; right: 34px;
+    width:44px; height:44px;
+    border-radius:50%;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: transparent;
+    color: var(--white);
+    font-size: 1.3rem;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .lightbox-close:hover{ border-color: var(--gold-light); color: var(--gold-light); }
+
+  .toast{
+    position: fixed;
+    left: 50%;
+    bottom: 40px;
+    transform: translate(-50%, 20px);
+    background: var(--charcoal);
+    color: var(--cream-soft);
+    border: 1px solid var(--gold-line);
+    padding: 14px 24px;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-weight:600;
+    z-index: 950;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .toast.show{ opacity:1; transform: translate(-50%, 0); }
+
+  /* ============================================================
+     CONTACT
+     ============================================================ */
+  .contact-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+  }
+  .contact-list{ display:flex; flex-direction:column; gap: 26px; }
+  .contact-row{ display:flex; gap:18px; align-items:flex-start; }
+  .contact-row .gem-icon{ width:20px; height:20px; color: var(--gold-dark); flex-shrink:0; margin-top:4px; }
+  .contact-row h4{ font-size: 0.96rem; margin-bottom:4px; }
+  .contact-row p, .contact-row a{ font-size: 0.93rem; color: var(--ink-soft); }
+  .contact-row a:hover{ color: var(--gold-dark); }
+
+  .meeting-card{
+    background: var(--cream-soft);
+    border: 1px solid var(--gold-line);
+    border-radius: var(--radius-md);
+    padding: 40px;
+  }
+  .meeting-card h3{ font-size:1.3rem; margin-bottom: 14px; }
+  .meeting-card p{ color: var(--ink-soft); margin-bottom: 22px; }
+  .social-row{ display:flex; gap:14px; margin-top: 8px; }
+  .social-row a{
+    width:42px; height:42px;
+    border-radius:50%;
+    border: 1px solid var(--gold-line);
+    display:flex; align-items:center; justify-content:center;
+    color: var(--gold-dark);
+    transition: background-color .3s ease, color .3s ease;
+  }
+  .social-row a:hover{ background: var(--gold); color:#1B1408; }
+  .social-row svg{ width:17px; height:17px; }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer{ background: var(--charcoal); color: rgba(237,230,216,0.6); padding: 80px 0 0; }
+  .footer-grid{
+    display:grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 50px;
+    padding-bottom: 60px;
+    border-bottom: 1px solid var(--charcoal-line);
+  }
+  .footer-brand .brand{ color: var(--white); margin-bottom: 16px; }
+  .footer-brand p{ font-size:0.9rem; max-width: 320px; }
+  footer h4{
+    font-family:'Manrope', sans-serif;
+    font-weight:700;
+    color: var(--white);
+    font-size: 0.88rem;
+    margin-bottom: 18px;
+  }
+  .footer-links{ display:flex; flex-direction:column; gap:12px; }
+  .footer-links a{ font-size: 0.9rem; transition: color .3s ease; }
+  .footer-links a:hover{ color: var(--gold-light); }
+  .footer-contact p{ font-size:0.9rem; margin: 0 0 10px; }
+  .footer-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 26px 0;
+    font-size: 0.82rem;
+    flex-wrap:wrap;
+    gap: 12px;
+  }
+  .footer-bottom .social-row a{ width:36px; height:36px; border-color: var(--charcoal-line); color: rgba(237,230,216,0.7); }
+  .footer-bottom .social-row a:hover{ background: var(--gold); color:#1B1408; }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 980px){
+    .nav-links, header .login-btn{ display:none; }
+    .hamburger{ display:block; }
+    .about-grid, .contact-grid{ grid-template-columns: 1fr; gap: 46px; }
+    .about-media{ order:-1; }
+    .stats-row{ grid-template-columns: repeat(2,1fr); }
+    .cards-grid{ grid-template-columns: 1fr 1fr; }
+    .gallery-grid{ grid-template-columns: repeat(3,1fr); grid-auto-rows: 150px; }
+    .footer-grid{ grid-template-columns: 1fr 1fr; }
+    .footer-brand{ grid-column: span 2; }
+  }
+
+  @media (max-width: 640px){
+    .container{ padding: 0 20px; }
+    section{ padding: 84px 0; }
+    .hero{ padding-bottom: 70px; }
+    .hero-actions{ flex-direction:column; align-items:flex-start; }
+    .hero-actions .btn{ width:100%; }
+    .pillars{ grid-template-columns: 1fr; }
+    .stats-row{ grid-template-columns: repeat(2,1fr); }
+    .cards-grid{ grid-template-columns: 1fr; }
+    .gallery-grid{ grid-template-columns: repeat(2,1fr); grid-auto-rows: 140px; }
+    .gallery-item:nth-child(1){ grid-column: span 2; grid-row: span 1; }
+    .gallery-item:nth-child(7){ grid-row: span 1; }
+    .footer-grid{ grid-template-columns: 1fr; }
+    .footer-brand{ grid-column: span 1; }
+    .footer-bottom{ flex-direction:column; align-items:flex-start; }
+    .scroll-cue{ display:none; }
+  }
+
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+
+<!-- reusable diamond emblem, referenced via <use> -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="gem" viewBox="0 0 48 48">
+    <path d="M8 16 L24 6 L40 16 L24 44 Z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M8 16 L40 16" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M24 6 L16 16 L24 44" stroke="currentColor" stroke-width="1.1"/>
+    <path d="M24 6 L32 16 L24 44" stroke="currentColor" stroke-width="1.1"/>
+    <path d="M16 16 L32 16" stroke="currentColor" stroke-width="1.1"/>
+  </symbol>
+</svg>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header id="site-header">
+  <div class="container">
+    <a class="brand" href="#home" aria-label="Diamond Club 99 of Ekiti home">
+      <img src="logo.png" alt="Diamond Club 99 of Ekiti Logo">
+      <span class="brand-name">DIAMOND CLUB '99 OF EKITI</span>
+    </a>
+
+    <nav class="primary-nav">
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About Club</a></li>
+        <li><a href="#constitution">Constitution</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <!-- Placeholder only — wire to member auth system later -->
+      <a href="members/login.html" id="members-login-link" class="login-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        Members Login
+      </a>
+    </nav>
+
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#home" class="mobile-link">Home</a>
+  <a href="#about" class="mobile-link">About Club</a>
+  <a href="#constitution" class="mobile-link">Constitution</a>
+  <a href="#gallery" class="mobile-link">Gallery</a>
+  <a href="#contact" class="mobile-link">Contact</a>
+  <a href="members/login.html" id="members-login-link-mobile" class="login-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+    Members Login
+  </a>
+</div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="home">
+  <div class="hero-media">
+    <video id="hero-video"
+           autoplay
+           muted
+           playsinline
+           preload="auto"
+           aria-hidden="true">
+      <source src="Hands_shaking_on_diamond_20260914015602.mp4" type="video/mp4">
+    </video>
+  </div>
+  <img class="hero-side-art" src="background thing.png" alt="Diamond Club 99 of Ekiti constitution emblem and motto">
+  <svg class="hero-gem"><use href="#gem"/></svg>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="eyebrow reveal" data-order="0">
+        <svg class="gem"><use href="#gem"/></svg>
+        Founded 25 November 1999
+      </div>
+      <h1 class="reveal" data-order="1">DIAMOND CLUB 99 OF EKITI</h1>
+      <p class="hero-tagline reveal" data-order="2">United We Stand</p>
+      <p class="hero-copy reveal" data-order="3">A fellowship formed to bring Ekiti intellectuals under one umbrella, promote the welfare and progress of Ekiti people, and encourage unity, consultation, friendship and understanding. The Club's constitution was enacted at formation, reviewed in 2013 and amended in 2023.</p>
+      <div class="hero-actions reveal" data-order="4">
+        <a href="#about" class="btn btn-gold">Learn About the Club</a>
+        <a href="#constitution" class="btn btn-outline">Explore the Constitution</a>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue"><span class="line"></span>SCROLL</div>
+</section>
+
+<!-- ============================================================
+     ABOUT
+     ============================================================ -->
+<section id="about">
+  <div class="container about-grid">
+    <div class="about-text reveal">
+      <div class="eyebrow">
+        <svg class="gem"><use href="#gem"/></svg>
+        Who we are
+      </div>
+      <h2>About Diamond Club 99 of Ekiti</h2>
+      <p>The constitution states that Ekiti elite came together on 25 November 1999 to form Diamond Club 99 of Ekiti, with the aim of harmonizing opinions on important national issues, promoting the welfare of Ekiti people, and advancing the progress and unity of Ekiti land.</p>
+
+      <div class="pillars">
+        <div class="pillar">
+          <svg class="gem-icon"><use href="#gem"/></svg>
+          <div><h4>Brotherhood</h4><p>Genuine friendships built on trust, accountability, and shared purpose.</p></div>
+        </div>
+        <div class="pillar">
+          <svg class="gem-icon"><use href="#gem"/></svg>
+          <div><h4>Mentorship</h4><p>Encouraging influential members and Ekiti indigenes to mentor younger Ekiti sons and daughters.</p></div>
+        </div>
+        <div class="pillar">
+          <svg class="gem-icon"><use href="#gem"/></svg>
+          <div><h4>Ekiti Progress</h4><p>Promoting the cultural, economic, political and social progress of Ekiti people.</p></div>
+        </div>
+        <div class="pillar">
+          <svg class="gem-icon"><use href="#gem"/></svg>
+          <div><h4>Consultation & Dialogue</h4><p>Using consultation and dialogue to harmonize divergent opinions affecting Ekiti land.</p></div>
+        </div>
+      </div>
+
+      <div class="more-copy" id="more-copy">
+        <p>The constitution also provides for cooperation, friendship and understanding within the Club and with other Ekiti organizations, while encouraging members to pursue sustainable personal economic goals and support younger people to achieve higher social and economic goals.</p>
+      </div>
+
+      <button class="btn btn-outline-dark" id="read-more-btn">Read More</button>
+    </div>
+
+    <div class="about-media reveal">
+      <div class="frame">
+        <img src="10.jpeg" alt="Members of Diamond Club meeting together">
+      </div>
+      <div class="gem-badge"><svg class="gem-icon"><use href="#gem"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONSTITUTION / CLUB FRAMEWORK
+     ============================================================ -->
+<section class="section-dark" id="constitution">
+  <div class="container constitution-grid">
+    <div class="constitution-cover reveal">
+      <img src="club-constitution-side.png" alt="Diamond Club 99 of Ekiti constitution cover">
+    </div>
+    <div class="constitution-content reveal">
+      <div class="eyebrow"><svg class="gem"><use href="#gem"/></svg>The Club's governing framework</div>
+      <h2>Built Around the Constitution</h2>
+      <p class="constitution-intro">The Constitution of Diamond Club 99 of Ekiti sets out the Club's identity, vision, mission, membership rules, financial obligations, organs, leadership responsibilities, meetings, trusteeship, banking, auditing and dissolution procedures.</p>
+      <div class="constitution-points">
+        <div class="constitution-point"><strong>MOTTO</strong><span> UNITED WE STAND </span></div>
+        <div class="constitution-point"><strong>VISION</strong><span>To provide quality leadership toward the culture, economic, social and political development of Ekitiland and her people.</span></div>
+        <div class="constitution-point"><strong>Membership</strong><span>Open to eligible Ekiti men of unquestionable character with reasonable economic, educational and social background.</span></div>
+        <div class="constitution-point"><strong>MISSION</strong><span>The club shall promot and uphold the highest standard of our values, culture, economic development, political aspirations and social well-being of our members and Ekiti people</span></div>
+        <div class="constitution-point"><strong>General Meeting</strong><span>Monthly general meeting: last Sunday of each month at 3 pm, at a venue approved by the General House.</span></div>
+        <div class="constitution-point"><strong>AIMS AND OBJECTIVES</strong><span>i. To cater for the interest and welfare of its members. ii. To promot the cultural, economic, political and social progress of Ekiti people as well as unity and progress of Ekiti land. iii. To encourage, promote and foster co-operation, friendship and understand within the club and other Ekiti organizations.</span></div>
+        <div class="constitution-point"><strong>Leadership</strong><span>President and Vice President serve two-year terms, with a maximum of two continuous terms.</span></div>
+        <div class="constitution-point"><strong>Organs</strong><span>General House, Executive Committee, Board of Trustees and Agba Egbe, plus approved standing or ad hoc committees.</span></div>
+      </div>
+      <a class="btn btn-gold" href="Diamond Club 99 of Ekiti Constitution.pdf" target="_blank" rel="noopener">Read the Full Constitution</a>
+      <p class="constitution-note">This website summary is intended to make key constitutional provisions easier to understand. The official PDF remains the authoritative document.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     GALLERY
+     ============================================================ -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow"><svg class="gem"><use href="#gem"/></svg>Moments together</div>
+      <h2>Diamond Club Gallery</h2>
+      <p>A look at our gatherings, service work, and the everyday moments of brotherhood.</p>
+    </div>
+
+    <div class="gallery-grid reveal">
+      <div class="gallery-item" data-caption="Annual Gala"><img src="4.png" alt="Annual Gala"></div>
+      <div class="gallery-item" data-caption="Social Activities"><img src="5.jpeg" alt="Social Activities"></div>
+      <div class="gallery-item" data-caption="Members celebration"><img src="1.jpeg" alt="Members celebration"></div>
+      <div class="gallery-item" data-caption="Social Events"><img src="8.jpeg" alt="Social Events"></div>
+      <div class="gallery-item" data-caption="Charity Fundraiser"><img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=700&auto=format&fit=crop" alt="Charity Fundraiser"></div>
+      <div class="gallery-item" data-caption="Founders' Dinner"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=700&auto=format&fit=crop" alt="Founders' Dinner"></div>
+      <div class="gallery-item" data-caption="Leadership Retreat"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=700&auto=format&fit=crop" alt="Leadership Retreat"></div>
+      <div class="gallery-item" data-caption="Scholarship Ceremony"><img src="https://images.unsplash.com/photo-1591115765373-5207764f72e7?q=80&w=700&auto=format&fit=crop" alt="Scholarship Ceremony"></div>
+    </div>
+
+    <div class="gallery-footer reveal">
+      <!-- Placeholder — wire to full gallery route once built -->
+      <button class="btn btn-outline-dark" id="view-full-gallery">View Full Gallery</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT
+     ============================================================ -->
+<section class="section-dark" id="contact">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow"><svg class="gem"><use href="#gem"/></svg>Get in touch</div>
+      <h2>Club Information</h2>
+      <p>Reach out to learn more about Diamond Club, our chapters, and how to get involved.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-list reveal">
+        <div class="contact-row">
+          <svg class="gem-icon"><use href="#gem"/></svg>
+          <div><h4>Club Identity</h4><p>Diamond Club 99 of Ekiti<br>Motto: United We Stand</p></div>
+        </div>
+        <div class="contact-row">
+          <svg class="gem-icon"><use href="#gem"/></svg>
+          <div><h4>Founded</h4><p>25 November 1999</p></div>
+        </div>
+        <div class="contact-row">
+          <svg class="gem-icon"><use href="#gem"/></svg>
+          <div><h4>Constitution</h4><p>Reviewed in 2013<br>Amended in 2023</p></div>
+        </div>
+        <div class="contact-row">
+          <svg class="gem-icon"><use href="#gem"/></svg>
+          <div><h4>Monthly General Meeting</h4><p>Last Sunday of each month<br>3:00 PM<br>Venue approved by the General House</p></div>
+        </div>
+      </div>
+
+      <div class="meeting-card reveal">
+        <h3>Membership & Admission</h3>
+        <p>Intending members apply through an application form, which the constitution states costs N10,000 non-refundable. Completed applications are referred to Executive Members, followed by the Club's admission and induction process.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 9h3V6h-3a3 3 0 0 0-3 3v2H8v3h3v6h3v-6h3l1-3h-4V9a1 1 0 0 1 1-1Z"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="7" y1="10" x2="7" y2="17"/><line x1="7" y1="7" x2="7" y2="7.01"/><path d="M11 17v-4a2 2 0 0 1 4 0v4"/><line x1="11" y1="10" x2="11" y2="17"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#home" class="brand">
+          <img src="logo.png" alt="Diamond Club 99 of Ekiti Logo">
+          <span class="brand-name">DIAMOND CLUB 99 OF EKITI</span>
+        </a>
+        <p>A private fellowship of men committed to brotherhood, leadership, and community service.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <div class="footer-links">
+          <a href="#about">About Club</a>
+          <a href="#constitution">Constitution</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p>Diamond Club 99 of Ekiti</p>
+        <p>Founded 25 November 1999</p>
+        <p>Motto: United We Stand</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Diamond Club 99 of Ekiti. All Rights Reserved.</span>
+      <div class="social-row">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 9h3V6h-3a3 3 0 0 0-3 3v2H8v3h3v6h3v-6h3l1-3h-4V9a1 1 0 0 1 1-1Z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="7" y1="10" x2="7" y2="17"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+  <div class="caption" id="lightbox-caption"></div>
+</div>
+
+<div class="toast" id="toast">Full gallery coming soon.</div>
+
+<script>
+  // ---------- Hero background video ----------
+  // The video plays once when the page opens. When it ends, the browser
+  // naturally keeps the final frame visible instead of looping/restarting.
+  const heroVideo = document.getElementById('hero-video');
+  if (heroVideo) {
+    heroVideo.addEventListener('ended', () => {
+      heroVideo.pause();
+      // Keep the final frame displayed as the hero background.
+    });
+  }
+
+  // ---------- Header scroll state ----------
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // ---------- Mobile menu ----------
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  function closeMenu(){
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  hamburger.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+  // ---------- Read more toggle ----------
+  const moreCopy = document.getElementById('more-copy');
+  const readMoreBtn = document.getElementById('read-more-btn');
+  readMoreBtn.addEventListener('click', () => {
+    const open = moreCopy.classList.toggle('open');
+    readMoreBtn.textContent = open ? 'Show Less' : 'Read More';
+  });
+
+  // ---------- Reveal on scroll ----------
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        const delay = (entry.target.dataset.order || 0) * 120;
+        setTimeout(() => entry.target.classList.add('in-view'), delay);
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // ---------- Animated counters ----------
+  const counters = document.querySelectorAll('.stat .num');
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.dataset.count, 10);
+      const suffix = el.dataset.suffix || '';
+      const duration = 1600;
+      const start = performance.now();
+      function tick(now){
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target).toLocaleString() + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      counterObserver.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => counterObserver.observe(c));
+
+  // ---------- Gallery lightbox ----------
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const img = item.querySelector('img');
+      lightboxImg.src = img.src.replace('w=900', 'w=1600').replace('w=700', 'w=1600');
+      lightboxImg.alt = img.alt;
+      lightboxCaption.textContent = item.dataset.caption || '';
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+  // ---------- View Full Gallery placeholder ----------
+  const toast = document.getElementById('toast');
+  document.getElementById('view-full-gallery').addEventListener('click', () => {
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2400);
+  });
+
+  // ---------- Members Login ----------
+  // Now wired to the private Members Area (see /members/login.html).
+  // No further JS needed here — the links navigate normally.
+</script>
+
+</body>
+</html>

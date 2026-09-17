@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administrator Login — Diamond Club 99 of Ekiti</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/members.css">
+<link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+
+<!--
+  ============================================================
+  ADMIN LOGIN — SEPARATE SESSION SPACE FROM THE MEMBERS AREA
+  See assets/js/admin-auth.js for the authentication architecture.
+  ============================================================
+-->
+
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <img src="../assets/images/logo.png" alt="Diamond Club 99 of Ekiti Logo">
+      <div class="club-name">DIAMOND CLUB 99 OF EKITI</div>
+      <div class="admin-tag">ADMINISTRATOR ACCESS</div>
+    </div>
+
+    <div class="auth-heading"><h1>Admin Login</h1></div>
+    <p class="auth-sub">This area is restricted to authorized administrators of Diamond Club 99 of Ekiti.</p>
+
+    <div class="form-alert error" id="formError">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+      <span id="formErrorText">Invalid administrator email or password.</span>
+    </div>
+
+    <form id="loginForm" novalidate>
+      <div class="field" id="fieldEmail">
+        <label for="adminEmail">Admin email</label>
+        <input type="text" id="adminEmail" name="adminEmail" autocomplete="username" placeholder="admin@diamondclub99.example">
+        <div class="field-error">Please enter your admin email.</div>
+      </div>
+
+      <div class="field has-toggle" id="fieldPassword">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <input type="password" id="password" name="password" autocomplete="current-password" placeholder="Enter your password">
+          <button type="button" class="toggle-visibility" id="togglePassword" aria-label="Show password">
+            <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div class="field-error">Please enter your password.</div>
+      </div>
+
+      <div class="form-row-between">
+        <div class="checkbox-row">
+          <input type="checkbox" id="rememberMe" name="rememberMe">
+          <label for="rememberMe">Remember me</label>
+        </div>
+      </div>
+
+      <div class="auth-submit" id="submitWrap">
+        <button type="submit" class="btn btn-gold btn-block" id="loginBtn">
+          <span class="btn-label">Login to Admin Panel</span>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </form>
+
+    <div class="auth-foot">
+      <a href="../members/login.html">Members login</a> &nbsp;·&nbsp; <a href="../diamond-club.html">Homepage</a>
+    </div>
+
+    <div class="auth-demo-note">Administrator credentials are managed securely by the club backend.</div>
+  </div>
+</div>
+
+<script src="../assets/js/admin-auth.js"></script>
+<script>
+  if (window.DCAdminAuth && DCAdminAuth.isAuthenticated()) location.replace("dashboard.html");
+
+  const form = document.getElementById("loginForm");
+  const emailField = document.getElementById("fieldEmail");
+  const passwordField = document.getElementById("fieldPassword");
+  const emailInput = document.getElementById("adminEmail");
+  const passwordInput = document.getElementById("password");
+  const formError = document.getElementById("formError");
+  const formErrorText = document.getElementById("formErrorText");
+  const submitWrap = document.getElementById("submitWrap");
+  const loginBtn = document.getElementById("loginBtn");
+
+  document.getElementById("togglePassword").addEventListener("click", () => {
+    const isPw = passwordInput.type === "password";
+    passwordInput.type = isPw ? "text" : "password";
+    document.getElementById("eyeIcon").innerHTML = isPw
+      ? '<path d="M3 3l18 18M10.6 10.6a3 3 0 0 0 4.2 4.2M9.9 5.1A11 11 0 0 1 23 12s-1.6 2.8-4.4 4.9M6.1 6.6C3.6 8.3 1 12 1 12s4 7 11 7c1.5 0 2.9-.3 4.1-.8"/>'
+      : '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/>';
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    formError.classList.remove("show");
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+    emailField.classList.toggle("invalid", !email);
+    passwordField.classList.toggle("invalid", !password);
+    if (!email || !password) return;
+
+    submitWrap.classList.add("loading");
+    loginBtn.disabled = true;
+
+    DCAdminAuth.login(email, password, document.getElementById("rememberMe").checked)
+      .then(() => {
+        const params = new URLSearchParams(location.search);
+        location.href = params.get("redirect") || "dashboard.html";
+      })
+      .catch((err) => {
+        submitWrap.classList.remove("loading");
+        loginBtn.disabled = false;
+        formErrorText.textContent = err.message || "Something went wrong. Please try again.";
+        formError.classList.add("show");
+      });
+  });
+</script>
+</body>
+</html>
