@@ -71,10 +71,37 @@ function readSession(req) {
   try { return jwt.verify(token, JWT_SECRET); } catch { return null; }
 }
 
+// Re-checks the database on every request instead of trusting the JWT alone,
+// so disabling/deactivating/deleting an account takes effect immediately
+// rather than only once the (up to 30-day) session token expires.
+async function verifySession(session) {
+  if (!session) return false;
+  if (session.role === 'member') {
+    const { data, error } = await supabase.from('members').select('id,account_enabled,status').eq('id', session.sub).maybeSingle();
+    if (error) throw error;
+    return Boolean(data && data.account_enabled && data.status === 'Active');
+  }
+  if (session.role === 'admin') {
+    const { data, error } = await supabase.from('admins').select('id').eq('id', session.sub).maybeSingle();
+    if (error) throw error;
+    return Boolean(data);
+  }
+  return false;
+}
+
 function requireRole(role) {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     const session = readSession(req);
     if (!session || session.role !== role) return res.status(401).json({ error: 'Authentication required.' });
+    try {
+      if (!(await verifySession(session))) {
+        res.clearCookie('dc_session', cookieOptions());
+        return res.status(401).json({ error: 'Account unavailable.' });
+      }
+    } catch (e) {
+      console.error('Session check failed:', e);
+      return res.status(500).json({ error: 'Server error.' });
+    }
     req.session = session;
     next();
   };
@@ -406,16 +433,21 @@ app.post('/api/support', requireRole('member'), async (req, res) => {
 });
 
 // Protect the HTML shells server-side as well as in the browser.
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   if (req.method !== 'GET') return next();
   const normalized = req.path.replace(/\\/g, '/');
-  if (normalized.startsWith('/admin/') && normalized.endsWith('.html') && !normalized.endsWith('/login.html')) {
-    const s = readSession(req);
-    if (!s || s.role !== 'admin') return res.redirect('/admin/login.html');
-  }
-  if (normalized.startsWith('/members/') && normalized.endsWith('.html') && !normalized.endsWith('/login.html') && !normalized.endsWith('/forgot-password.html')) {
-    const s = readSession(req);
-    if (!s || s.role !== 'member') return res.redirect('/members/login.html');
+  try {
+    if (normalized.startsWith('/admin/') && normalized.endsWith('.html') && !normalized.endsWith('/login.html')) {
+      const s = readSession(req);
+      if (!s || s.role !== 'admin' || !(await verifySession(s))) return res.redirect('/admin/login.html');
+    }
+    if (normalized.startsWith('/members/') && normalized.endsWith('.html') && !normalized.endsWith('/login.html') && !normalized.endsWith('/forgot-password.html')) {
+      const s = readSession(req);
+      if (!s || s.role !== 'member' || !(await verifySession(s))) return res.redirect('/members/login.html');
+    }
+  } catch (e) {
+    console.error('Page auth check failed:', e);
+    return res.status(500).send('Server error.');
   }
   next();
 });
