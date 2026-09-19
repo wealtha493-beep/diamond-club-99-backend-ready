@@ -264,28 +264,54 @@
 
   .mobile-menu{
     position: fixed;
-    inset:0;
+    top: 68px;
+    right: 16px;
+    left: auto;
     z-index: 610;
-    background: rgba(15,16,20,0.97);
+    width: min(240px, 72vw);
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    background: rgba(20,21,27,0.98);
+    border: 1px solid var(--gold-line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-deep);
     backdrop-filter: blur(14px);
     display:flex;
     flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap: 34px;
+    align-items:flex-start;
+    justify-content:flex-start;
+    gap: 4px;
+    padding: 14px;
     opacity:0;
     visibility:hidden;
-    transform: translateY(-10px);
-    transition: opacity .4s var(--ease), transform .4s var(--ease), visibility .4s;
+    transform: translateY(-8px) scale(.98);
+    transform-origin: top right;
+    transition: opacity .3s var(--ease), transform .3s var(--ease), visibility .3s;
   }
   .mobile-menu.open{ opacity:1; visibility:visible; transform:none; }
   .mobile-menu a{
+    width:100%;
     color: var(--cream);
-    font-family:'Fraunces', serif;
-    font-size: 1.7rem;
-    font-weight:500;
+    font-family:'Manrope', sans-serif;
+    font-size: 0.98rem;
+    font-weight:600;
+    text-align:left;
+    padding: 11px 10px;
+    border-radius: var(--radius-sm);
+    transition: background-color .25s ease, color .25s ease;
   }
-  .mobile-menu .login-btn{ margin-top: 10px; }
+  .mobile-menu a:hover, .mobile-menu a:focus-visible{
+    background: rgba(185,146,79,0.14);
+    color: var(--gold-light);
+  }
+  .mobile-menu .login-btn{
+    margin-top: 6px;
+    width:100%;
+    justify-content:flex-start;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+  header.scrolled ~ .mobile-menu{ top: 60px; }
 
   /* ============================================================
      HERO
@@ -725,13 +751,26 @@
   @media (max-width: 980px){
     .nav-links, header .login-btn{ display:none; }
     .hamburger{ display:block; }
-    .about-grid, .contact-grid{ grid-template-columns: 1fr; gap: 46px; }
+    .about-grid, .contact-grid, .constitution-grid{ grid-template-columns: 1fr; gap: 46px; }
     .about-media{ order:-1; }
     .stats-row{ grid-template-columns: repeat(2,1fr); }
     .cards-grid{ grid-template-columns: 1fr 1fr; }
     .gallery-grid{ grid-template-columns: repeat(3,1fr); grid-auto-rows: 150px; }
     .footer-grid{ grid-template-columns: 1fr 1fr; }
     .footer-brand{ grid-column: span 2; }
+    /* the emblem art was overlapping the hero headline/copy on smaller
+       screens, which is what made the text look "jumbled" — shrink it
+       and tuck it behind the text instead of beside it */
+    .hero-side-art{
+      width: clamp(120px, 34vw, 190px);
+      opacity: 0.5;
+      right: 4px;
+      top: auto;
+      bottom: 90px;
+      transform: none;
+      z-index: 1;
+    }
+    .hero-inner{ position:relative; z-index:2; max-width: 100%; }
   }
 
   @media (max-width: 640px){
@@ -746,10 +785,15 @@
     .gallery-grid{ grid-template-columns: repeat(2,1fr); grid-auto-rows: 140px; }
     .gallery-item:nth-child(1){ grid-column: span 2; grid-row: span 1; }
     .gallery-item:nth-child(7){ grid-row: span 1; }
+    .constitution-points{ grid-template-columns: 1fr; }
     .footer-grid{ grid-template-columns: 1fr; }
     .footer-brand{ grid-column: span 1; }
     .footer-bottom{ flex-direction:column; align-items:flex-start; }
     .scroll-cue{ display:none; }
+    .brand-name{ font-size: 0.98rem; }
+    /* on very small phones the badge just gets in the way of the
+       paragraph text, so hide it entirely and let the copy breathe */
+    .hero-side-art{ display:none; }
   }
 
   a:focus-visible, button:focus-visible{
