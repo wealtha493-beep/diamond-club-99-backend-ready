@@ -208,3 +208,9 @@
   .stat-grid{ grid-template-columns:1fr; }
   .admin-card-grid{ grid-template-columns:1fr; }
 }
+@media (max-width: 560px){
+  /* Quick Actions buttons on the admin dashboard were forced into a
+     cramped 2-column grid that pushed content off the right edge of
+     the screen on phones — stack them full-width instead */
+  .qa-grid{ grid-template-columns: 1fr !important; }
+}

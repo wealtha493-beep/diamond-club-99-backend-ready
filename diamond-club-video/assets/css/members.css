@@ -775,8 +775,8 @@ a:focus-visible, button:focus-visible, input:focus-visible{
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1080px){
-  .grid-3{ grid-template-columns: 1fr 1fr; }
-  .grid-4{ grid-template-columns: 1fr 1fr; }
+  .grid-3{ grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+  .grid-4{ grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
   .mem-gallery-grid{ grid-template-columns: repeat(3,1fr); }
 }
 
@@ -791,7 +791,7 @@ a:focus-visible, button:focus-visible, input:focus-visible{
   .sidebar-scrim.open{ display:block; }
   .main{ margin-left:0; }
   .topbar-title{ display:none; }
-  .grid-2, .grid-3{ grid-template-columns: 1fr 1fr; }
+  .grid-2, .grid-3{ grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
   .president-card{ grid-template-columns:1fr; text-align:center; }
   .president-photo{ margin:0 auto; }
   .const-hero{ grid-template-columns:1fr; }
@@ -800,7 +800,7 @@ a:focus-visible, button:focus-visible, input:focus-visible{
 
 @media (max-width: 700px){
   .main-inner{ padding: 30px 18px 70px; }
-  .grid-2, .grid-3, .grid-4{ grid-template-columns: 1fr; }
+  .grid-2, .grid-3, .grid-4{ grid-template-columns: minmax(0,1fr); }
   .mem-gallery-grid{ grid-template-columns: repeat(2,1fr); grid-auto-rows:150px; }
   .profile-header{ flex-direction:column; text-align:center; }
   .profile-id .pid-meta{ justify-content:center; }
@@ -808,5 +808,23 @@ a:focus-visible, button:focus-visible, input:focus-visible{
   .p-name{ display:none; }
   .const-meta-row{ gap:16px; }
   .pdf-embed-wrap iframe{ height:480px; }
-  .officer-term-table{ display:block; overflow-x:auto; white-space:nowrap; }
+
+  /* the topbar's brand text + notification bell + avatar trigger
+     don't fit their default sizing/gaps in ~375px of width, which
+     pushed the avatar off the right edge of the screen entirely on
+     phones — tighten padding/gaps and drop the subtitle so
+     everything stays on-screen and tappable */
+  .topbar{ padding: 0 12px; gap: 8px; }
+  .sidebar-toggle{ width:36px; height:36px; }
+  .topbar-brand{ gap: 6px; }
+  .topbar-brand img{ width:30px; height:30px; }
+  .topbar-brand .t-name{ font-size:0.8rem; line-height:1.2; }
+  .topbar-brand > span{ max-width: 92px; display:inline-block; }
+  .topbar-brand .t-tag{ display:none; }
+  .topbar-actions{ gap:4px; }
+  .icon-btn{ width:36px; height:36px; }
+  .icon-btn svg{ width:16px; height:16px; }
+  .profile-trigger{ padding:3px 6px 3px 3px; gap:4px; }
+  .profile-trigger .avatar{ width:27px; height:27px; font-size:0.7rem; }
+  .profile-trigger svg{ width:12px; height:12px; }
 }
