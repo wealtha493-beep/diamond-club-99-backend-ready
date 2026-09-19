@@ -226,6 +226,13 @@ app.get('/api/settings', requireRole('member'), async (_req, res) => {
   res.json({ clubName: data.club_name, motto: data.motto, contactEmail: data.contact_email, contactPhone: data.contact_phone });
 });
 
+// Public, unauthenticated — just the non-sensitive club info the homepage footer needs.
+app.get('/api/public/settings', async (_req, res) => {
+  const { data, error } = await supabase.from('settings').select('club_name,motto,contact_email,contact_phone').eq('id', 1).single();
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ clubName: data.club_name, motto: data.motto, contactEmail: data.contact_email, contactPhone: data.contact_phone });
+});
+
 // Member-readable content: only published/active records are returned.
 for (const [entity, cfg] of Object.entries(tables)) {
   if (entity === 'members') continue;

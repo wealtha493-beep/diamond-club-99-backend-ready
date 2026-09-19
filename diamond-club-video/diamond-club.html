@@ -1069,6 +1069,8 @@
         <p>Diamond Club 99 of Ekiti</p>
         <p>Founded 25 November 1999</p>
         <p>Motto: United We Stand</p>
+        <p id="footerEmailRow" style="display:none;">Email: <a id="footerEmail" href="#" style="color:inherit; text-decoration:underline;"></a></p>
+        <p id="footerPhoneRow" style="display:none;">Phone: <a id="footerPhone" href="#" style="color:inherit; text-decoration:underline;"></a></p>
       </div>
     </div>
     <div class="footer-bottom">
@@ -1219,6 +1221,27 @@
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 2400);
   });
+
+  // ---------- Footer contact info (admin-managed) ----------
+  (async function loadFooterContact() {
+    try {
+      const res = await fetch('/api/public/settings');
+      if (!res.ok) return;
+      const s = await res.json();
+      if (s.contactEmail) {
+        const a = document.getElementById('footerEmail');
+        a.href = `mailto:${s.contactEmail}`;
+        a.textContent = s.contactEmail;
+        document.getElementById('footerEmailRow').style.display = '';
+      }
+      if (s.contactPhone) {
+        const a = document.getElementById('footerPhone');
+        a.href = `tel:${s.contactPhone.replace(/[^\d+]/g, '')}`;
+        a.textContent = s.contactPhone;
+        document.getElementById('footerPhoneRow').style.display = '';
+      }
+    } catch (e) { /* footer just shows the static info if this fails */ }
+  })();
 
   // ---------- Members Login ----------
   // Now wired to the private Members Area (see /members/login.html).
