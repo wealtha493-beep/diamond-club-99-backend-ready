@@ -273,7 +273,21 @@ app.get('/api/admin/gallery', requireRole('admin'), async (_req, res) => {
     if (error) throw error;
     const rows = await Promise.all((data || []).map(async x => {
       const { data: signed } = await supabase.storage.from('club-gallery').createSignedUrl(x.image_path, 24 * 60 * 60);
-      return { id: x.id, category: x.category || 'Uncategorized', caption: x.caption, image: signed?.signedUrl || '', published: x.published };
+      return { id: x.id, category: x.category || 'Uncategorized', caption: x.caption, image: signed?.signedUrl || '', published: x.published, isPublic: x.is_public };
+    }));
+    res.json(rows);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Public, unauthenticated feed for the marketing homepage — only images the
+// admin has explicitly marked "show on public homepage" AND published.
+app.get('/api/public/gallery', async (_req, res) => {
+  try {
+    const { data, error } = await supabase.from('gallery').select('*').eq('published', true).eq('is_public', true).order('created_at', { ascending: false }).limit(8);
+    if (error) throw error;
+    const rows = await Promise.all((data || []).map(async x => {
+      const { data: signed } = await supabase.storage.from('club-gallery').createSignedUrl(x.image_path, 24 * 60 * 60);
+      return { id: x.id, caption: x.caption, image: signed?.signedUrl || '' };
     }));
     res.json(rows);
   } catch (e) { res.status(500).json({ error: e.message }); }
@@ -410,12 +424,12 @@ app.post('/api/admin/gallery/upload', requireRole('admin'), upload.single('image
     const filePath = `gallery/${crypto.randomUUID()}.${ext}`;
     const { error: uploadError } = await supabase.storage.from('club-gallery').upload(filePath, req.file.buffer, { contentType: req.file.mimetype, upsert: false });
     if (uploadError) throw uploadError;
-    const row = { caption, category: String(req.body.category || 'Uncategorized').trim(), published: req.body.published !== 'false', image_path: filePath };
+    const row = { caption, category: String(req.body.category || 'Uncategorized').trim(), published: req.body.published !== 'false', is_public: req.body.isPublic === 'true', image_path: filePath };
     const { data, error } = await supabase.from('gallery').insert(row).select('*').single();
     if (error) throw error;
     const { data: signed } = await supabase.storage.from('club-gallery').createSignedUrl(filePath, 24 * 60 * 60);
     await logActivity(req, 'uploaded gallery image', row.caption);
-    res.status(201).json({ id: data.id, caption: data.caption, category: data.category, published: data.published, image: signed?.signedUrl || '' });
+    res.status(201).json({ id: data.id, caption: data.caption, category: data.category, published: data.published, isPublic: data.is_public, image: signed?.signedUrl || '' });
   } catch (e) { res.status(400).json({ error: e.message }); }
 });
 
@@ -431,12 +445,12 @@ app.patch('/api/admin/gallery/:id', requireRole('admin'), upload.single('image')
       if (uploadError) throw uploadError;
       if (current.image_path) await supabase.storage.from('club-gallery').remove([current.image_path]);
     }
-    const patch = { caption: String(req.body.caption ?? current.caption).trim(), category: String(req.body.category ?? current.category ?? '').trim(), published: req.body.published === undefined ? current.published : req.body.published !== 'false', image_path: imagePath, updated_at: new Date().toISOString() };
+    const patch = { caption: String(req.body.caption ?? current.caption).trim(), category: String(req.body.category ?? current.category ?? '').trim(), published: req.body.published === undefined ? current.published : req.body.published !== 'false', is_public: req.body.isPublic === undefined ? current.is_public : req.body.isPublic === 'true', image_path: imagePath, updated_at: new Date().toISOString() };
     const { data, error } = await supabase.from('gallery').update(patch).eq('id', req.params.id).select('*').single();
     if (error) throw error;
     const { data: signed } = await supabase.storage.from('club-gallery').createSignedUrl(imagePath, 24 * 60 * 60);
     await logActivity(req, 'updated gallery image', data.caption);
-    res.json({ id: data.id, caption: data.caption, category: data.category, published: data.published, image: signed?.signedUrl || '' });
+    res.json({ id: data.id, caption: data.caption, category: data.category, published: data.published, isPublic: data.is_public, image: signed?.signedUrl || '' });
   } catch (e) { res.status(400).json({ error: e.message }); }
 });
 

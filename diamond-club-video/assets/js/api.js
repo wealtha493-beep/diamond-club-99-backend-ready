@@ -51,6 +51,7 @@
         fd.append('caption', item.caption || '');
         fd.append('category', item.category || 'Uncategorized');
         fd.append('published', String(item.published !== false));
+        fd.append('isPublic', String(item.isPublic === true));
         return request('/admin/gallery/upload', { method: 'POST', body: fd });
       }
       return request('/admin/gallery', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(item) });
@@ -62,6 +63,7 @@
         fd.append('caption', patch.caption || '');
         fd.append('category', patch.category || 'Uncategorized');
         fd.append('published', String(patch.published !== false));
+        fd.append('isPublic', String(patch.isPublic === true));
         return request(`/admin/gallery/${encodeURIComponent(id)}`, { method: 'PATCH', body: fd });
       }
       return request(`/admin/gallery/${encodeURIComponent(id)}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(patch) });

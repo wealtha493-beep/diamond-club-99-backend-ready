@@ -1173,16 +1173,19 @@
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   const lightboxCaption = document.getElementById('lightbox-caption');
-  document.querySelectorAll('.gallery-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const img = item.querySelector('img');
-      lightboxImg.src = img.src.replace('w=900', 'w=1600').replace('w=700', 'w=1600');
-      lightboxImg.alt = img.alt;
-      lightboxCaption.textContent = item.dataset.caption || '';
-      lightbox.classList.add('open');
-      document.body.style.overflow = 'hidden';
+  function wireGalleryItems() {
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const img = item.querySelector('img');
+        lightboxImg.src = img.src.replace('w=900', 'w=1600').replace('w=700', 'w=1600');
+        lightboxImg.alt = img.alt;
+        lightboxCaption.textContent = item.dataset.caption || '';
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
     });
-  });
+  }
+  wireGalleryItems();
   function closeLightbox(){
     lightbox.classList.remove('open');
     document.body.style.overflow = '';
@@ -1190,6 +1193,25 @@
   document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
   lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+  // ---------- Public gallery (admin-managed) ----------
+  // Swaps the placeholder images above for real ones the admin has
+  // uploaded and marked "Show on public homepage". If nothing is
+  // marked public yet (or the request fails), the placeholders stay.
+  (async function loadPublicGallery() {
+    try {
+      const res = await fetch('/api/public/gallery');
+      if (!res.ok) return;
+      const items = await res.json();
+      if (!Array.isArray(items) || items.length === 0) return;
+      const esc = (s) => String(s || '').replace(/"/g, '&quot;');
+      const grid = document.querySelector('#gallery .gallery-grid');
+      grid.innerHTML = items.slice(0, 8).map(it =>
+        `<div class="gallery-item" data-caption="${esc(it.caption)}"><img src="${it.image}" alt="${esc(it.caption)}"></div>`
+      ).join('');
+      wireGalleryItems();
+    } catch (e) { /* keep the placeholder gallery already on the page */ }
+  })();
 
   // ---------- View Full Gallery placeholder ----------
   const toast = document.getElementById('toast');

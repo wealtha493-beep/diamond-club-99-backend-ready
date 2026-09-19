@@ -109,6 +109,11 @@
           <label class="toggle"><input type="checkbox" id="fPublished" checked><span class="track"></span></label>
           <label for="fPublished" style="margin:0;">Published (visible to members)</label>
         </div>
+        <div class="field" style="display:flex; align-items:center; gap:10px;">
+          <label class="toggle"><input type="checkbox" id="fPublic"><span class="track"></span></label>
+          <label for="fPublic" style="margin:0;">Show on public homepage</label>
+        </div>
+        <div class="backend-note">Public homepage shows up to 8 images marked this way, newest first. Visible to anyone, no login required.</div>
       </form>
     </div>
     <div class="modal-foot">
@@ -168,7 +173,7 @@
       </div>
       <div class="body">
         <h4>${it.caption || 'Untitled'}</h4>
-        <div class="rp-sub">${it.category || 'Uncategorized'}</div>
+        <div class="rp-sub">${it.category || 'Uncategorized'}${it.isPublic ? ' · <span style="color:var(--gold,#b9924f); font-weight:600;">Public</span>' : ''}</div>
         <div class="m-meta">
           ${DCAdminUI.publishToggle(it.id, it.published !== false, 'gallery')}
           <span>${it.published !== false ? 'Published' : 'Draft'}</span>
@@ -218,6 +223,7 @@
     document.querySelector("#fDropzone .dz-title").textContent = "Click to choose an image";
     document.getElementById("fId").value = "";
     document.getElementById("fPublished").checked = true;
+    document.getElementById("fPublic").checked = false;
     DCAdminUI.openModal("itemModal");
   }
   function openEdit(id) {
@@ -229,6 +235,7 @@
     document.getElementById("fCaption").value = it.caption || "";
     document.getElementById("fCategory").value = it.category || "";
     document.getElementById("fPublished").checked = it.published !== false;
+    document.getElementById("fPublic").checked = it.isPublic === true;
     DCAdminUI.openModal("itemModal");
   }
   document.getElementById("addBtn").addEventListener("click", openAdd);
@@ -242,7 +249,8 @@
     const payload = {
       caption,
       category: document.getElementById("fCategory").value.trim() || "Uncategorized",
-      published: document.getElementById("fPublished").checked
+      published: document.getElementById("fPublished").checked,
+      isPublic: document.getElementById("fPublic").checked
     };
     const file = document.getElementById("fImage").files[0];
     if (file) payload.file = file;

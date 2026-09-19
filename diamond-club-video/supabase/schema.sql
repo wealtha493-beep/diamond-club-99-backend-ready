@@ -84,9 +84,12 @@ create table if not exists public.gallery (
   caption text not null,
   image_path text not null,
   published boolean not null default true,
+  is_public boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+-- Safe to re-run: adds the column if this table already existed before this change.
+alter table public.gallery add column if not exists is_public boolean not null default false;
 
 create table if not exists public.leadership (
   id uuid primary key default gen_random_uuid(),
