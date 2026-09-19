@@ -108,7 +108,7 @@
             <div class="field"><label>New password</label><input type="password" id="sNewPw" placeholder="••••••••"></div>
             <div class="field"><label>Confirm new password</label><input type="password" id="sConfirmPw" placeholder="••••••••"></div>
           </div>
-          <div class="backend-note" style="margin-bottom:18px;">Passwords must be hashed and verified server-side — never in frontend JavaScript. This form is a UI placeholder only.</div>
+          <div class="backend-note" style="margin-bottom:18px;">New password must be at least 8 characters.</div>
           <button class="btn btn-outline-dark btn-sm" type="button" id="changePwBtn">Change Password</button>
 
           <h3 style="margin-top:28px;">Session</h3>
@@ -174,13 +174,30 @@
 
   document.getElementById("logoBtn").addEventListener("click", () => DCAdminUI.toast("Logo uploads need a backend — see the note below."));
 
-  document.getElementById("changePwBtn").addEventListener("click", () => {
+  document.getElementById("changePwBtn").addEventListener("click", async () => {
     const cur = document.getElementById("sCurrentPw").value;
     const next = document.getElementById("sNewPw").value;
-    const confirm = document.getElementById("sConfirmPw").value;
-    if (!cur || !next || !confirm) { DCAdminUI.toast("Fill in all password fields."); return; }
-    if (next !== confirm) { DCAdminUI.toast("New passwords don't match."); return; }
-    DCAdminUI.toast("Password changes require a real backend — see the note above.");
+    const confirmPw = document.getElementById("sConfirmPw").value;
+    if (!cur || !next || !confirmPw) { DCAdminUI.toast("Fill in all password fields."); return; }
+    if (next !== confirmPw) { DCAdminUI.toast("New passwords don't match."); return; }
+    if (next.length < 8) { DCAdminUI.toast("New password must be at least 8 characters."); return; }
+    try {
+      const res = await fetch("/api/admin/change-password", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword: cur, newPassword: next })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Could not change password.");
+      document.getElementById("sCurrentPw").value = "";
+      document.getElementById("sNewPw").value = "";
+      document.getElementById("sConfirmPw").value = "";
+      DCAdminUI.toast("Password changed.");
+      DCStore.activity.log("changed the administrator password", "", DCAdminAuth.currentSession().email);
+    } catch (e) {
+      DCAdminUI.toast(e.message || "Could not change password.");
+    }
   });
 
   document.getElementById("logoutAllBtn").addEventListener("click", () => {

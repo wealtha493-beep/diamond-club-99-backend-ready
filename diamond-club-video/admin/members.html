@@ -292,7 +292,7 @@
     const newId = document.getElementById("mMemberId").value.trim();
     if (!name || !newId) { DCAdminUI.toast("Name and Member ID are required."); return; }
     const payload = {
-      id: newId,
+      memberId: newId,
       fullName: name,
       dateJoined: document.getElementById("mDateJoined").value,
       email: document.getElementById("mEmail").value.trim(),

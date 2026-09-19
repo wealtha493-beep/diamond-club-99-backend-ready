@@ -382,6 +382,25 @@ app.patch('/api/admin/settings', requireRole('admin'), async (req, res) => {
   res.json({ clubName: data.club_name, motto: data.motto, contactEmail: data.contact_email, contactPhone: data.contact_phone });
 });
 
+app.post('/api/admin/change-password', requireRole('admin'), async (req, res) => {
+  try {
+    const currentPassword = String(req.body.currentPassword || '');
+    const newPassword = String(req.body.newPassword || '');
+    if (!currentPassword || !newPassword) return res.status(400).json({ error: 'Current and new password are required.' });
+    if (newPassword.length < 8) return res.status(400).json({ error: 'New password must be at least 8 characters.' });
+    const { data, error } = await supabase.from('admins').select('id,password_hash').eq('id', req.session.sub).maybeSingle();
+    if (error) throw error;
+    if (!data || !(await bcrypt.compare(currentPassword, data.password_hash))) {
+      return res.status(401).json({ error: 'Current password is incorrect.' });
+    }
+    const password_hash = await bcrypt.hash(newPassword, 12);
+    const { error: updateError } = await supabase.from('admins').update({ password_hash, updated_at: new Date().toISOString() }).eq('id', req.session.sub);
+    if (updateError) throw updateError;
+    await logActivity(req, 'changed the administrator password', '');
+    res.json({ ok: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 app.post('/api/admin/gallery/upload', requireRole('admin'), upload.single('image'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'Please choose an image.' });
