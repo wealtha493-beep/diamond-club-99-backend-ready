@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /members/
+
+Sitemap: https://YOUR-LIVE-DOMAIN/sitemap.xml
