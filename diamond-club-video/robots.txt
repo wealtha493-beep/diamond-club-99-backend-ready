@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
-
 Disallow: /admin/
 Disallow: /members/
+Disallow: /api/
 
-Sitemap: https://YOUR-LIVE-DOMAIN/sitemap.xml
+Sitemap: https://diamond-club-99-backend-ready.onrender.com/sitemap.xml
